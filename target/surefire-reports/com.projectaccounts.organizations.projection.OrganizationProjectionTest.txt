@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.projectaccounts.organizations.projection.OrganizationProjectionTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.556 s -- in com.projectaccounts.organizations.projection.OrganizationProjectionTest
