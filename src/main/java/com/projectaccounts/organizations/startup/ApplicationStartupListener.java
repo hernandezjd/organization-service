@@ -1,5 +1,6 @@
 package com.projectaccounts.organizations.startup;
 
+import com.projectaccounts.organizations.util.GitPropertiesProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +20,10 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
     public ApplicationStartupListener(
             @Value("${project.name:organization-service}") String serviceName,
             @Value("${project.version:unknown}") String version,
-            @Value("${git.commit.id.abbrev:unknown}") String commitHash) {
+            GitPropertiesProvider gitPropertiesProvider) {
         this.serviceName = serviceName;
         this.version = version;
-        this.commitHash = commitHash;
+        this.commitHash = gitPropertiesProvider.getCommitHash();
     }
 
     @Override

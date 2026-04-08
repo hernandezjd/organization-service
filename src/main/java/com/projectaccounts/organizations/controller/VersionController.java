@@ -1,5 +1,6 @@
 package com.projectaccounts.organizations.controller;
 
+import com.projectaccounts.organizations.util.GitPropertiesProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,10 @@ public class VersionController {
     public VersionController(
             @Value("${project.name:organization-service}") String serviceName,
             @Value("${project.version:unknown}") String version,
-            @Value("${git.commit.id.abbrev:unknown}") String commitHash) {
+            GitPropertiesProvider gitPropertiesProvider) {
         this.serviceName = serviceName;
         this.version = version;
-        this.commitHash = commitHash;
+        this.commitHash = gitPropertiesProvider.getCommitHash();
     }
 
     @GetMapping
