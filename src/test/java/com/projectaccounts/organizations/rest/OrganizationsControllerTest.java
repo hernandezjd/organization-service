@@ -57,8 +57,6 @@ class OrganizationsControllerTest {
         UUID orgId = UUID.randomUUID();
         when(commandService.createOrganization(any(CreateOrganizationRequest.class)))
             .thenReturn(orgId);
-        when(queryService.getOrganizationById(orgId))
-            .thenReturn(createOrganizationEntity(orgId.toString()));
 
         // When & Then
         mockMvc.perform(post("/organizations")
@@ -72,7 +70,6 @@ class OrganizationsControllerTest {
             .andExpect(jsonPath("$.status").value("ACTIVE"));
 
         verify(commandService).createOrganization(any(CreateOrganizationRequest.class));
-        verify(queryService).getOrganizationById(orgId);
     }
 
     @Test

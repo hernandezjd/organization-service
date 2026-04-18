@@ -34,8 +34,15 @@ public class OrganizationsController implements OrganizationsApi {
     @Override
     public ResponseEntity<OrganizationResponse> createOrganization(CreateOrganizationRequest request) {
         UUID organizationId = commandService.createOrganization(request);
-        OrganizationEntity entity = queryService.getOrganizationById(organizationId);
-        OrganizationResponse response = mapToResponse(entity);
+        OrganizationResponse response = new OrganizationResponse(
+            organizationId.toString(),
+            request.name(),
+            request.contactEmail(),
+            request.address(),
+            "ACTIVE",
+            null,
+            null
+        );
 
         URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
