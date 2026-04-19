@@ -1,0 +1,217 @@
+databaseChangeLog:
+  - changeSet:
+      id: organization-service-002-axon-tables
+      author: juandiegohernandez
+      changes:
+        - createSequence:
+            sequenceName: association_value_entry_seq
+            startValue: 1
+            incrementBy: 50
+        - createTable:
+            tableName: association_value_entry
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: association_key
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: association_value
+                  type: VARCHAR(255)
+              - column:
+                  name: saga_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: saga_type
+                  type: VARCHAR(255)
+        - createIndex:
+            indexName: idx_association_value_entry_saga_id
+            tableName: association_value_entry
+            columns:
+              - column:
+                  name: saga_id
+        - createIndex:
+            indexName: idx_association_value_entry_assoc_key
+            tableName: association_value_entry
+            columns:
+              - column:
+                  name: association_key
+              - column:
+                  name: association_value
+        - createTable:
+            tableName: saga_entry
+            columns:
+              - column:
+                  name: saga_id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: revision
+                  type: VARCHAR(255)
+              - column:
+                  name: saga_type
+                  type: VARCHAR(255)
+              - column:
+                  name: serialized_saga
+                  type: OID
+        - createTable:
+            tableName: token_entry
+            columns:
+              - column:
+                  name: processor_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: segment
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: OID
+              - column:
+                  name: token_type
+                  type: VARCHAR(255)
+              - column:
+                  name: timestamp
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner
+                  type: VARCHAR(255)
+        - addPrimaryKey:
+            tableName: token_entry
+            columnNames: processor_name, segment
+            constraintName: pk_token_entry
+        - createTable:
+            tableName: dead_letter_entry
+            columns:
+              - column:
+                  name: dead_letter_id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: cause_message
+                  type: VARCHAR(1023)
+              - column:
+                  name: cause_type
+                  type: VARCHAR(255)
+              - column:
+                  name: diagnostics
+                  type: OID
+              - column:
+                  name: enqueued_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_touched
+                  type: TIMESTAMP WITH TIME ZONE
+              - column:
+                  name: processing_started
+                  type: TIMESTAMP WITH TIME ZONE
+              - column:
+                  name: aggregate_identifier
+                  type: VARCHAR(255)
+              - column:
+                  name: event_identifier
+                  type: VARCHAR(255)
+              - column:
+                  name: message_type
+                  type: VARCHAR(255)
+              - column:
+                  name: message_identifier
+                  type: VARCHAR(255)
+              - column:
+                  name: meta_data
+                  type: OID
+              - column:
+                  name: payload
+                  type: OID
+              - column:
+                  name: payload_revision
+                  type: VARCHAR(255)
+              - column:
+                  name: payload_type
+                  type: VARCHAR(255)
+              - column:
+                  name: sequence_number
+                  type: BIGINT
+              - column:
+                  name: time_stamp
+                  type: VARCHAR(255)
+              - column:
+                  name: token
+                  type: OID
+              - column:
+                  name: token_type
+                  type: VARCHAR(255)
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+              - column:
+                  name: processing_group
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sequence_identifier
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sequence_index
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_dead_letter_processing_group
+            tableName: dead_letter_entry
+            columns:
+              - column:
+                  name: processing_group
+        - createIndex:
+            indexName: idx_dead_letter_sequence
+            tableName: dead_letter_entry
+            columns:
+              - column:
+                  name: processing_group
+              - column:
+                  name: sequence_identifier
+      rollback:
+        - dropIndex:
+            indexName: idx_dead_letter_sequence
+            tableName: dead_letter_entry
+        - dropIndex:
+            indexName: idx_dead_letter_processing_group
+            tableName: dead_letter_entry
+        - dropTable:
+            tableName: dead_letter_entry
+        - dropTable:
+            tableName: token_entry
+        - dropTable:
+            tableName: saga_entry
+        - dropIndex:
+            indexName: idx_association_value_entry_assoc_key
+            tableName: association_value_entry
+        - dropIndex:
+            indexName: idx_association_value_entry_saga_id
+            tableName: association_value_entry
+        - dropTable:
+            tableName: association_value_entry
+        - dropSequence:
+            sequenceName: association_value_entry_seq
