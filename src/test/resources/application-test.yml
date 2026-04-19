@@ -16,6 +16,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
     open-in-view: false
+  liquibase:
+    enabled: false
   main:
     allow-bean-definition-overriding: true
 
