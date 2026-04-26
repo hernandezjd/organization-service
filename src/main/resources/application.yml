@@ -25,6 +25,10 @@ spring:
         jwt:
           issuer-uri: ${USER_SERVICE_ISSUER_URI:http://localhost:8085}
 
+app:
+  cors:
+    enabled: false
+
 axon:
   axonserver:
     servers: ${AXONIQ_AXONSERVER_SERVERS:localhost:8124}
