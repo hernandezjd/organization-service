@@ -6,6 +6,8 @@ import com.projectaccounts.organizations.service.OrganizationCommandService;
 import com.projectaccounts.organizations.service.OrganizationQueryService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,5 +50,11 @@ public class InternalOrganizationController {
             .toUri();
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @DeleteMapping("/organizations/{id}")
+    public ResponseEntity<Void> deleteOrganization(@PathVariable UUID id) {
+        commandService.deactivateOrganization(id);
+        return ResponseEntity.noContent().build();
     }
 }
