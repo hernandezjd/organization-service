@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.projectaccounts</groupId>
+    <groupId>io.orkidea</groupId>
     <artifactId>organization-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -30,7 +30,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.projectaccounts</groupId>
+            <groupId>io.orkidea</groupId>
             <artifactId>error-handling-library</artifactId>
             <version>1.0.0</version>
         </dependency>
@@ -144,8 +144,8 @@
                                 <openApiNullable>false</openApiNullable>
                                 <documentationProvider>none</documentationProvider>
                                 <skipDefaultInterface>true</skipDefaultInterface>
-                                <apiPackage>com.projectaccounts.organizations.api</apiPackage>
-                                <modelPackage>com.projectaccounts.organizations.dto</modelPackage>
+                                <apiPackage>io.orkidea.organizations.api</apiPackage>
+                                <modelPackage>io.orkidea.organizations.dto</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
