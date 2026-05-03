@@ -1,0 +1,73 @@
+package io.orkidea.organizations.service;
+
+import io.orkidea.organizations.command.CreateOrganizationCommand;
+import io.orkidea.organizations.command.UpdateOrganizationCommand;
+import io.orkidea.organizations.command.DeactivateOrganizationCommand;
+import io.orkidea.organizations.command.AddressValue;
+import io.orkidea.organizations.dto.CreateOrganizationRequest;
+import io.orkidea.organizations.dto.UpdateOrganizationRequest;
+import io.orkidea.organizations.dto.Address;
+import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+@Service
+public class OrganizationCommandService {
+
+    private final CommandGateway commandGateway;
+
+    public OrganizationCommandService(CommandGateway commandGateway) {
+        this.commandGateway = commandGateway;
+    }
+
+    public UUID createOrganization(CreateOrganizationRequest request) {
+        String organizationId = UUID.randomUUID().toString();
+        AddressValue addressValue = request.address() != null
+            ? new AddressValue(
+                request.address().street(),
+                request.address().city(),
+                request.address().state(),
+                request.address().postalCode(),
+                request.address().country()
+            )
+            : null;
+
+        CreateOrganizationCommand command = new CreateOrganizationCommand(
+            organizationId,
+            request.name(),
+            request.contactEmail(),
+            addressValue
+        );
+
+        commandGateway.sendAndWait(command);
+        return UUID.fromString(organizationId);
+    }
+
+    public void updateOrganization(UUID id, UpdateOrganizationRequest request) {
+        AddressValue addressValue = request.address() != null
+            ? new AddressValue(
+                request.address().street(),
+                request.address().city(),
+                request.address().state(),
+                request.address().postalCode(),
+                request.address().country()
+            )
+            : null;
+
+        UpdateOrganizationCommand command = new UpdateOrganizationCommand(
+            id.toString(),
+            request.name(),
+            request.contactEmail(),
+            addressValue
+        );
+
+        commandGateway.sendAndWait(command);
+    }
+
+    public void deactivateOrganization(UUID id) {
+        DeactivateOrganizationCommand command = new DeactivateOrganizationCommand(id.toString());
+        commandGateway.sendAndWait(command);
+    }
+}
