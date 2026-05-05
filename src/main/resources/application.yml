@@ -23,7 +23,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${OAUTH_ISSUER_URI:http://localhost:8085}
+          issuer-uri: ${OAUTH_ISSUER_URI:http://localhost:8080}
 
 app:
   cors:
